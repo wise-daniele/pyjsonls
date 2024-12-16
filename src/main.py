@@ -6,7 +6,7 @@ if __name__ == '__main__':
         data = json.load(f)
     print_top_level(data, True)
     print()
-    print_top_level_vertically_with_info(data, True, True)
+    print_top_level_vertically_with_info(data)
 
 
 

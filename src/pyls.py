@@ -11,8 +11,8 @@ def print_top_level(json_file, print_hidden):
                 result = result + " " + item["name"]
     print(result)
 
-def print_top_level_vertically_with_info(json_file, print_hidden, reverse):
-    result = ""
+def print_top_level_vertically_with_info(json_file, print_hidden=False, reverse=False, time_sorted=False):
+    my_list = list()
     if "contents" in json_file:
         if reverse:
             my_json_list = reversed(json_file["contents"])
@@ -27,7 +27,10 @@ def print_top_level_vertically_with_info(json_file, print_hidden, reverse):
             my_date = str(month) + " " + str(day) + " " + str(hour) + ":" + str(minute)
             if not print_hidden:
                 if item["name"][0] != ".":
-                    result = result + item["permissions"] + " " + str(item["size"]) + " " + my_date + " " +item["name"] + "\n"
+                    current_str = item["permissions"] + " " + str(item["size"]) + " " + my_date + " " +item["name"]
+                    my_list.append(current_str)
             else:
-                result = result + item["permissions"] + " " + str(item["size"]) + " " + my_date + " " +item["name"] + "\n"
-    print(result)
+                current_str = item["permissions"] + " " + str(item["size"]) + " " + my_date + " " +item["name"]
+                my_list.append(current_str)
+    for item in my_list:
+        print(item)
