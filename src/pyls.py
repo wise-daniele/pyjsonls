@@ -1,19 +1,21 @@
-import sys, datetime
+import datetime
 import json
+import argparse
 from operator import itemgetter
 
-def print_top_level(json_file, print_hidden=False):
+
+def print_top_level(json_file, all=False):
     result = ""
     if "contents" in json_file:
         for item in json_file["contents"]:
-            if not print_hidden:
+            if not all:
                 if item["name"][0] != ".":
                     result = result + " " + item["name"]
             else:
                 result = result + " " + item["name"]
     print(result)
 
-def print_top_level_vertically_with_info(json_file, print_hidden=False, reverse=False, time_sorted=False):
+def print_top_level_vertically_with_info(json_file, all=False, reverse=False, time_sorted=False, filter=None):
     my_list = list()
     if "contents" in json_file:
         if reverse:
@@ -27,7 +29,7 @@ def print_top_level_vertically_with_info(json_file, print_hidden=False, reverse=
             hour = date.hour
             minute = date.minute
             my_date = str(month) + " " + str(day) + " " + str(hour) + ":" + str(minute)
-            if not print_hidden:
+            if not all:
                 if item["name"][0] != ".":
                     current_str = item["permissions"] + " " + str(item["size"]) + " " + my_date + " " +item["name"]
                     my_dict = {
@@ -51,20 +53,31 @@ def print_top_level_vertically_with_info(json_file, print_hidden=False, reverse=
         print(item["info"])
 
 if __name__ == '__main__':
-    print("Start")
-    args = sys.argv
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-A', '--all', action=argparse.BooleanOptionalAction,
+                        help="Prints all top level files and directories", default=False)
+    parser.add_argument('-l', '--vert', action=argparse.BooleanOptionalAction,
+                        help="Prints the results vertically with additional information",
+                        default=False)
+    parser.add_argument('-r', '--reverse', action=argparse.BooleanOptionalAction,
+                        help="Prints the results vertically with additional information in reverse"
+                             " order with respect to the json list. If used with the '-t' argument,"
+                             " prints the result in reverse order with respect to the modified time",
+                        default=False)
+    parser.add_argument('-t', '--time', action=argparse.BooleanOptionalAction,
+                        help="Prints the results sorted by the modified time. If used with '-r' "
+                             "argument, prints the result in reverse order with respect to the "
+                             "modified time", default=False)
+    parser.add_argument('--filter', type=str, choices=['dir', 'file'],
+                        help="Filters the output according to a given option. The available options"
+                             " are 'dir' and 'file'")
+    args = parser.parse_args()
+
+    print(args)
     with open("../data/sample.json") as f:
         data = json.load(f)
-    print(args)
-    if len(args) == 1:
-        print_top_level(data)
-    elif len(args) == 2 and '-A' in args:
-        print_top_level(data, print_hidden=True)
-    elif len(args) == 2 and '-l' in args:
-        print_top_level_vertically_with_info(data)
-    elif len(args) == 3 and '-l' in args and '-r' in args:
-        print_top_level_vertically_with_info(data, reverse=True)
-    elif len(args) == 3 and '-l' in args and '-t' in args:
-        print_top_level_vertically_with_info(data, time_sorted=True)
-    elif len(args) == 4 and '-l' in args and '-r' in args and '-t' in args:
-        print_top_level_vertically_with_info(data, reverse=True, time_sorted=True)
+
+    if not args.vert:
+        print_top_level(data, args.all)
+    else:
+        print_top_level_vertically_with_info(data, args.all, args.reverse, args.time, args.filter)
