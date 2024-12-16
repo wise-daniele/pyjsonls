@@ -1,4 +1,4 @@
-import datetime
+import datetime, collections
 
 def print_top_level(json_file, print_hidden):
     result = ""
@@ -12,7 +12,7 @@ def print_top_level(json_file, print_hidden):
     print(result)
 
 def print_top_level_vertically_with_info(json_file, print_hidden=False, reverse=False, time_sorted=False):
-    my_list = list()
+    my_dict = dict()
     if "contents" in json_file:
         if reverse:
             my_json_list = reversed(json_file["contents"])
@@ -28,9 +28,11 @@ def print_top_level_vertically_with_info(json_file, print_hidden=False, reverse=
             if not print_hidden:
                 if item["name"][0] != ".":
                     current_str = item["permissions"] + " " + str(item["size"]) + " " + my_date + " " +item["name"]
-                    my_list.append(current_str)
+                    my_dict[item["time_modified"]] = current_str
             else:
                 current_str = item["permissions"] + " " + str(item["size"]) + " " + my_date + " " +item["name"]
-                my_list.append(current_str)
-    for item in my_list:
+                my_dict[item["time_modified"]] = current_str
+    if time_sorted:
+        my_dict = collections.OrderedDict(sorted(my_dict.items(), key=lambda t:t[0]))
+    for index, item in my_dict.items():
         print(item)
