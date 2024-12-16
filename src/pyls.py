@@ -33,6 +33,9 @@ def print_top_level_vertically_with_info(json_file, print_hidden=False, reverse=
                 current_str = item["permissions"] + " " + str(item["size"]) + " " + my_date + " " +item["name"]
                 my_dict[item["time_modified"]] = current_str
     if time_sorted:
-        my_dict = collections.OrderedDict(sorted(my_dict.items(), key=lambda t:t[0]))
+        if reverse:
+            my_dict = collections.OrderedDict(sorted(my_dict.items(), reverse=reverse))
+        else:
+            my_dict = collections.OrderedDict(sorted(my_dict.items()))
     for index, item in my_dict.items():
         print(item)

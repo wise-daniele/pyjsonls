@@ -9,6 +9,8 @@ if __name__ == '__main__':
     print_top_level_vertically_with_info(data)
     print()
     print_top_level_vertically_with_info(data, time_sorted=True)
+    print()
+    print_top_level_vertically_with_info(data, reverse=True, time_sorted=True)
 
 
 
