@@ -11,9 +11,14 @@ def print_top_level(json_file, print_hidden):
                 result = result + " " + item["name"]
     print(result)
 
-def print_top_level_vertically_with_info(json_file, print_hidden):
+def print_top_level_vertically_with_info(json_file, print_hidden, reverse):
+    result = ""
     if "contents" in json_file:
-        for item in json_file["contents"]:
+        if reverse:
+            my_json_list = reversed(json_file["contents"])
+        else:
+            my_json_list = json_file["contents"]
+        for item in my_json_list:
             date = datetime.datetime.fromtimestamp(item["time_modified"])
             month = date.strftime('%b')
             day = date.day
@@ -22,6 +27,7 @@ def print_top_level_vertically_with_info(json_file, print_hidden):
             my_date = str(month) + " " + str(day) + " " + str(hour) + ":" + str(minute)
             if not print_hidden:
                 if item["name"][0] != ".":
-                    print(item["permissions"] + " " + str(item["size"]) + " " + my_date + " " +item["name"])
+                    result = result + item["permissions"] + " " + str(item["size"]) + " " + my_date + " " +item["name"] + "\n"
             else:
-                print(item["permissions"] + " " + str(item["size"]) + " " + my_date + " " + item["name"])
+                result = result + item["permissions"] + " " + str(item["size"]) + " " + my_date + " " +item["name"] + "\n"
+    print(result)
