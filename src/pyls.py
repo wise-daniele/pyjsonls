@@ -36,9 +36,8 @@ def print_top_level_vertically_with_info(json_data, print_all=False, reverse=Fal
 
 def print_path_info(my_json, print_all=False, reverse=False, time_sorted=False, my_filter=None, path=None):
     list_path = path.split("/")
-    print(list_path)
-    n = len(list_path)
     my_list = list()
+    path_found = False
     for item in my_json["contents"]:
         if list_path[0] != item["name"]:
             continue
@@ -46,34 +45,27 @@ def print_path_info(my_json, print_all=False, reverse=False, time_sorted=False, 
             if len(list_path) == 1 and "contents" in item:
                 my_list = get_list_to_print(item["contents"], print_all, my_filter)#print content
             else:
-                my_list = recursive_print_path_info(item["contents"], list_path, print_all, reverse, time_sorted, my_filter)
-            """
-            current_path_name = list_path.pop(0)
-            print("Current list " + str(list_path))
-            if len(list_path) == 0:
-                if "contents" in item:
-                    my_list = get_list_to_print(item["contents"], print_all, my_filter)
-                    break
-                elif current_path_name == item["name"]:
-                    print("Current " + current_path_name)
-                    current_str = item["permissions"] + " " + str(item["size"]) + " " + my_date + " " + item["name"]
-                    my_dict = {
-                        "timestamp": item["time_modified"],
-                        "info": current_str
-                    }
-                    my_list.append(my_dict)
-                    break
-            """
-    if time_sorted:
-        if reverse:
-            my_list = sorted(my_list, key=itemgetter("timestamp"), reverse=True)
-        else:
-            my_list = sorted(my_list, key=itemgetter("timestamp"))
-    for item in my_list:
-        print(item["info"])
+                current_path = "./" + item["name"]
+                my_list = recursive_print_path_info(item["contents"], list_path, current_path, print_all, reverse,
+                                                    time_sorted, my_filter)
+            path_found = True
+            break
+    if not path_found or not my_list:
+        print("error: cannot access '" + path + "': No such file or directory")
+    else:
+        if time_sorted:
+            if reverse:
+                my_list = sorted(my_list, key=itemgetter("timestamp"), reverse=True)
+            else:
+                my_list = sorted(my_list, key=itemgetter("timestamp"))
+        for item in my_list:
+            print(item["info"])
 
-def recursive_print_path_info(my_json_list, list_path, print_all=False, reverse=False, time_sorted=False, my_filter=None):
+def recursive_print_path_info(my_json_list, list_path, current_path, print_all=False, reverse=False, time_sorted=False,
+                              my_filter=None):
     for item in my_json_list:
+        if len(list_path) == 0:
+            break
         if list_path[0] == item["name"]:
             if len(list_path) == 1:
                 my_list = list()
@@ -81,18 +73,21 @@ def recursive_print_path_info(my_json_list, list_path, print_all=False, reverse=
                 if "contents" in item:
                     my_list = get_list_to_print(item["contents"], print_all, my_filter)
                 else:
+                    current_path = current_path + "/" + list_path.pop(0)
                     my_list.append(build_item_for_list(item["permissions"], item["size"], my_date, item["name"],
-                                                       item["time_modified"]))
+                                                       item["time_modified"], current_path))
                 return my_list
             else:
-                list_path.pop(0)
-                recursive_print_path_info(item["contents"], list_path, print_all, reverse, time_sorted, my_filter)
+                current_path = current_path + "/" + list_path.pop(0)
+                recursive_print_path_info(item["contents"], list_path, current_path, print_all, reverse, time_sorted,
+                                          my_filter)
         else:
             list_path.pop(0)
             continue
+    return None
 
 
-def get_list_to_print(contents_list, print_all=False, my_filter=None):
+def get_list_to_print(contents_list, print_all=False, my_filter=None, current_path=None):
     my_list = list()
     for item in contents_list:
         if apply_filter(item, my_filter):
@@ -107,8 +102,11 @@ def get_list_to_print(contents_list, print_all=False, my_filter=None):
                                                item["time_modified"]))
     return my_list
 
-def build_item_for_list(permissions, size, date, name, time_modified):
-    current_str = permissions + " " + str(size) + " " + date + " " + name
+def build_item_for_list(permissions, size, date, name, time_modified, path=None):
+    if path:
+        current_str = permissions + " " + str(size) + " " + date + " " + path
+    else:
+        current_str = permissions + " " + str(size) + " " + date + " " + name
     my_dict = {
         "timestamp": time_modified,
         "info": current_str
