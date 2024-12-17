@@ -174,7 +174,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     print(args)
-    with open("../data/sample.json") as f:
+    with open("../../data/sample.json") as f:
         json_data = json.load(f)
 
     if not args.vert:

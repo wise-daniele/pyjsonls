@@ -1,0 +1,18 @@
+[project]
+name = "pyls"
+version = "0.0.1"
+authors = [
+  { name="Daniele S.", email="" },
+]
+description = "This program takes a json file representing a directory and prints out its content in the console in the style of ls"
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/wise-daniele/pyls"
+Issues = "https://github.com/wise-daniele/pyls/issues"
