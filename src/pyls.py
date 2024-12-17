@@ -150,21 +150,20 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser("This program takes a json file containing the representation of a directory"
                                      " in nested structure, and prints out its content in the console in the style"
                                      " of ls (linux utility).")
-    parser.add_argument('-A', '--print_all', action=argparse.BooleanOptionalAction,
+    parser.add_argument('-A', '--print_all', action='store_true',
                         help="Prints all files and directories at the top level. If path argument is specified"
-                             "prints all files and directories at the path sub level", default=False)
-    parser.add_argument('-l', '--vert', action=argparse.BooleanOptionalAction,
-                        help="Prints the results vertically with additional information",
-                        default=False)
-    parser.add_argument('-r', '--reverse', action=argparse.BooleanOptionalAction,
+                             "prints all files and directories at the path sub level")
+    parser.add_argument('-l', '--vert', action='store_true',
+                        help="Prints the results vertically with additional information")
+    parser.add_argument('-r', '--reverse', action='store_true',
                         help="Prints the results vertically with additional information in reverse"
                              " order with respect to the json list. If used with the '-t' argument,"
                              " prints the result in reverse order with respect to the modified time",
                         default=False)
-    parser.add_argument('-t', '--time', action=argparse.BooleanOptionalAction,
+    parser.add_argument('-t', '--time', action='store_true',
                         help="Prints the results sorted by the modified time. If used with '-r' "
                              "argument, prints the result in reverse order with respect to the "
-                             "modified time", default=False)
+                             "modified time")
     parser.add_argument('--filter', type=str, choices=['dir', 'file'],
                         help="Filters the output according to a given option. The available options"
                              " are 'dir' and 'file'")
