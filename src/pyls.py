@@ -3,6 +3,11 @@ import json
 import argparse
 from operator import itemgetter
 
+KILO = 1024
+MEGA = KILO ** 2
+GIGA = KILO ** 3
+TERA = KILO ** 4
+
 
 def print_top_level(json_data, print_all=False, my_filter=None):
     result = ""
@@ -103,15 +108,28 @@ def get_list_to_print(contents_list, print_all=False, my_filter=None, current_pa
     return my_list
 
 def build_item_for_list(permissions, size, date, name, time_modified, path=None):
+    my_size = build_size(size)
     if path:
-        current_str = permissions + " " + str(size) + " " + date + " " + path
+        current_str = permissions + " " + my_size + " " + date + " " + path
     else:
-        current_str = permissions + " " + str(size) + " " + date + " " + name
+        current_str = permissions + " " + my_size + " " + date + " " + name
     my_dict = {
         "timestamp": time_modified,
         "info": current_str
     }
     return my_dict
+
+def build_size(size):
+    if size < KILO:
+        return str(size)
+    elif KILO <= size < MEGA:
+        return '{0:.1f}K'.format(round(size / KILO, 1))
+    elif MEGA <= size < GIGA:
+        return '{0:.1f}M'.format(round(size / MEGA), 1)
+    elif GIGA <= size < TERA:
+        return '{0:.1f}G'.format(round(size / GIGA), 1)
+    elif TERA <= size:
+        return '{0:.1f}T'.format(round(size / TERA), 1)
 
 def build_date(time_modified):
     date = datetime.datetime.fromtimestamp(time_modified)
