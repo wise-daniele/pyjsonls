@@ -147,9 +147,12 @@ def apply_filter(item, my_filter):
     return False
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser("This program takes a json file containing the representation of a directory"
+                                     " in nested structure, and prints out its content in the console in the style"
+                                     " of ls (linux utility).")
     parser.add_argument('-A', '--print_all', action=argparse.BooleanOptionalAction,
-                        help="Prints all files and directories (only top level)", default=False)
+                        help="Prints all files and directories at the top level. If path argument is specified"
+                             "prints all files and directories at the path sub level", default=False)
     parser.add_argument('-l', '--vert', action=argparse.BooleanOptionalAction,
                         help="Prints the results vertically with additional information",
                         default=False)
