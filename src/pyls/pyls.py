@@ -76,10 +76,10 @@ def print_path_info(json_data, print_all=False, reverse=False, time_sorted=False
         if list_path[0] != item["name"]:
             continue
         else:
+            current_path = "./" + item["name"]
             if len(list_path) == 1 and "contents" in item:
-                my_list = get_list_to_print(item["contents"], print_all, my_filter)#print content
+                my_list = get_list_to_print(item["contents"], print_all, my_filter, current_path)
             else:
-                current_path = "./" + item["name"]
                 list_path.pop(0)
                 my_list = recursive_print_path_info(item["contents"], list_path, current_path, print_all, reverse,
                                                     time_sorted, my_filter)
@@ -117,10 +117,10 @@ def recursive_print_path_info(my_json_list, list_path, current_path, print_all=F
             if len(list_path) == 1:
                 my_list = list()
                 my_date = build_date(item["time_modified"])
+                current_path = current_path + "/" + list_path.pop(0)
                 if "contents" in item:
-                    my_list = get_list_to_print(item["contents"], print_all, my_filter)
+                    my_list = get_list_to_print(item["contents"], print_all, my_filter, current_path)
                 else:
-                    current_path = current_path + "/" + list_path.pop(0)
                     my_list.append(build_item_for_list(item["permissions"], item["size"], my_date, item["name"],
                                                        item["time_modified"], current_path))
                 return my_list
@@ -148,13 +148,17 @@ def get_list_to_print(contents_list, print_all=False, my_filter=None, current_pa
         if apply_filter(item, my_filter):
             continue
         my_date = build_date(item["time_modified"])
+        if current_path:
+            final_path = current_path + '/' + item['name']
+        else:
+            final_path = ''
         if not print_all:
             if item["name"][0] != ".":
                 my_list.append(build_item_for_list(item["permissions"], item["size"], my_date, item["name"],
-                                                   item["time_modified"]))
+                                                   item["time_modified"], final_path))
         else:
             my_list.append(build_item_for_list(item["permissions"], item["size"], my_date, item["name"],
-                                               item["time_modified"]))
+                                               item["time_modified"], final_path))
     return my_list
 
 def build_item_for_list(permissions, size, date, name, time_modified, path=None):
