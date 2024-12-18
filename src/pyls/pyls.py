@@ -67,6 +67,8 @@ def print_path_info(json_data, print_all=False, reverse=False, time_sorted=False
     :param my_filter: if 'dir' prints only the directories, if 'file' prints only the files. If None prints all
     :param path: path representing the level to be printed out
     """
+    if path[:2] == './':
+        path = path[2:]
     list_path = path.split("/")
     my_list = list()
     path_found = False
@@ -254,11 +256,18 @@ def main():
         json_data = json.load(f)
 
     if args.path:
-        print_path_info(json_data, args.print_all, args.reverse, args.time, args.filter, args.path)
-    elif not args.vert:
-        print_top_level(json_data, args.print_all, args.filter)
-    else:
+        if args.path == '.' or args.path == './':
+            if args.vert:
+                print_top_level_vertically_with_info(json_data, args.print_all, args.reverse, args.time, args.filter)
+            else:
+                print_top_level(json_data, args.print_all, args.filter)
+        else:
+            print_path_info(json_data, args.print_all, args.reverse, args.time, args.filter, args.path)
+    elif args.vert:
         print_top_level_vertically_with_info(json_data, args.print_all, args.reverse, args.time, args.filter)
+    else:
+        print_top_level(json_data, args.print_all, args.filter)
+
 
 # This is for testing within the development environment
 if __name__ == '__main__':
@@ -292,8 +301,14 @@ if __name__ == '__main__':
         json_data = json.load(f)
 
     if args.path:
-        print_path_info(json_data, args.print_all, args.reverse, args.time, args.filter, args.path)
-    elif not args.vert:
-        print_top_level(json_data, args.print_all, args.filter)
-    else:
+        if args.path == '.' or args.path == './':
+            if args.vert:
+                print_top_level_vertically_with_info(json_data, args.print_all, args.reverse, args.time, args.filter)
+            else:
+                print_top_level(json_data, args.print_all, args.filter)
+        else:
+            print_path_info(json_data, args.print_all, args.reverse, args.time, args.filter, args.path)
+    elif args.vert:
         print_top_level_vertically_with_info(json_data, args.print_all, args.reverse, args.time, args.filter)
+    else:
+        print_top_level(json_data, args.print_all, args.filter)
