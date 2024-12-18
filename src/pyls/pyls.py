@@ -179,13 +179,12 @@ def main():
     with open(os.getcwd() + "/sample.json") as f:
         json_data = json.load(f)
 
-    if not args.vert:
+    if args.path:
+        print_path_info(json_data, args.print_all, args.reverse, args.time, args.filter, args.path)
+    elif not args.vert:
         print_top_level(json_data, args.print_all, args.filter)
     else:
-        if args.path:
-            print_path_info(json_data, args.print_all, args.reverse, args.time, args.filter, args.path)
-        else:
-            print_top_level_vertically_with_info(json_data, args.print_all, args.reverse, args.time, args.filter)
+        print_top_level_vertically_with_info(json_data, args.print_all, args.reverse, args.time, args.filter)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("This program takes a json file containing the representation of a directory"
@@ -217,10 +216,9 @@ if __name__ == '__main__':
     with open("../data/sample.json") as f:
         json_data = json.load(f)
 
-    if not args.vert:
+    if args.path:
+        print_path_info(json_data, args.print_all, args.reverse, args.time, args.filter, args.path)
+    elif not args.vert:
         print_top_level(json_data, args.print_all, args.filter)
     else:
-        if args.path:
-            print_path_info(json_data, args.print_all, args.reverse, args.time, args.filter, args.path)
-        else:
-            print_top_level_vertically_with_info(json_data, args.print_all, args.reverse, args.time, args.filter)
+        print_top_level_vertically_with_info(json_data, args.print_all, args.reverse, args.time, args.filter)
