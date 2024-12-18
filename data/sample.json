@@ -131,6 +131,26 @@
           "permissions": "drwxr-xr-x",
           "contents": [
             {
+              "name": "test_deeper",
+              "size": 910567,
+              "time_modified": 1699954070,
+              "permissions": "-rw-r--r--",
+              "contents": [
+                {
+                  "name": "deep_deep",
+                  "size": 910,
+                  "time_modified": 1699954070,
+                  "permissions": "-rw-r--r--"
+                },
+                {
+                  "name": "deep_deep_again",
+                  "size": 66,
+                  "time_modified": 1699944730,
+                  "permissions": "drwxr-xr-x"
+                }
+              ]
+            },
+            {
               "name": "token.go",
               "size": 910,
               "time_modified": 1699954070,

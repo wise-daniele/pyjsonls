@@ -126,8 +126,8 @@ def recursive_print_path_info(my_json_list, list_path, current_path, print_all=F
                 return my_list
             else:
                 current_path = current_path + "/" + list_path.pop(0)
-                recursive_print_path_info(item["contents"], list_path, current_path, print_all, reverse, time_sorted,
-                                          my_filter)
+                return recursive_print_path_info(item["contents"], list_path, current_path, print_all, reverse,
+                                                 time_sorted, my_filter)
         else:
             continue
     return None
