@@ -19,15 +19,3 @@ The sub elements of the top directory are represented the same way. If the item 
 * -t: Prints the results sorted by the modified time. If used with '-r' argument, prints the result in reverse order with respect to the modified time
 * filter='name': Filters the output according to a given option. The available options are 'dir' and 'file'
 * optional path: Navigate the structure within the json and prints the file information (if the path represents a file) and the list of contents with their relative information (if the path is a directory)
-
-##### Install Procedure (Linux)
-* Open a terminal
-* Run "python3 -m build <project_path>"
-* Run "python3 -m pip install <project_path>"
-* Add the following line to your ~/.bashrc file: "alias pyls=<path_to_binary>/pyls"
-* Rename your json as 'sample.json'
-* Place your json within the same directory where the executable is located
-
-##### Run 
-* Open a terminal
-* Run the script together with arguments as specified above
