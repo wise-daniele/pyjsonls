@@ -1,6 +1,7 @@
 import datetime
 import json
 import argparse
+import os
 from operator import itemgetter
 
 KILO = 1024
@@ -175,8 +176,7 @@ def main():
                              " relative information if the path is a directory", default=None)
     args = parser.parse_args()
 
-    print(args)
-    with open("../../data/sample.json") as f:
+    with open(os.getcwd() + "/sample.json") as f:
         json_data = json.load(f)
 
     if not args.vert:
@@ -214,7 +214,6 @@ if __name__ == '__main__':
                              " relative information if the path is a directory", default=None)
     args = parser.parse_args()
 
-    print(args)
     with open("../data/sample.json") as f:
         json_data = json.load(f)
 
