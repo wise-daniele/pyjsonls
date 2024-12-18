@@ -11,6 +11,12 @@ TERA = KILO ** 4
 
 
 def print_top_level(json_data, print_all=False, my_filter=None):
+    """
+    Prints the list of files and directories present at the top level of the json
+    :param json_data: json loaded from file
+    :param print_all: if True prints all files and directories (included hidden ones)
+    :param my_filter: if 'dir' prints only the directories, if 'file' prints only the files. If none prints all
+    """
     result = ""
     if "contents" in json_data:
         for item in json_data["contents"]:
@@ -25,6 +31,15 @@ def print_top_level(json_data, print_all=False, my_filter=None):
 
 def print_top_level_vertically_with_info(json_data, print_all=False, reverse=False, time_sorted=False,
                                          my_filter=None):
+    """
+    Prints the list of files and directories present at the top level of the json with additional information
+    :param json_data: json loaded from file
+    :param print_all: if True prints all files and directories (included hidden ones)
+    :param reverse: if True prints the result in reverse. If used with time_sorted=True prints the result according
+                    to the time the file (or the directory) has been modified
+    :param time_sorted: if True prints the result according to the time the file (or the directory) has been modified
+    :param my_filter: if 'dir' prints only the directories, if 'file' prints only the files. If None prints all
+    """
     my_list = list()
     if "contents" in json_data:
         if reverse:
@@ -40,11 +55,22 @@ def print_top_level_vertically_with_info(json_data, print_all=False, reverse=Fal
     for item in my_list:
         print(item["info"])
 
-def print_path_info(my_json, print_all=False, reverse=False, time_sorted=False, my_filter=None, path=None):
+def print_path_info(json_data, print_all=False, reverse=False, time_sorted=False, my_filter=None, path=None):
+    """
+    Prints the list of files and directories present at path specified within the json representation, in a vertical
+    way with additional information
+    :param json_data: json loaded from file
+    :param print_all: if True prints all files and directories (included hidden ones)
+    :param reverse: if True prints the result in reverse. If used with time_sorted=True prints the result according
+                    to the time the file (or the directory) has been modified
+    :param time_sorted: if True prints the result according to the time the file (or the directory) has been modified
+    :param my_filter: if 'dir' prints only the directories, if 'file' prints only the files. If None prints all
+    :param path: path representing the level to be printed out
+    """
     list_path = path.split("/")
     my_list = list()
     path_found = False
-    for item in my_json["contents"]:
+    for item in json_data["contents"]:
         if list_path[0] != item["name"]:
             continue
         else:
@@ -69,6 +95,18 @@ def print_path_info(my_json, print_all=False, reverse=False, time_sorted=False, 
 
 def recursive_print_path_info(my_json_list, list_path, current_path, print_all=False, reverse=False, time_sorted=False,
                               my_filter=None):
+    """
+    Recursive auxiliary function for path traversal
+    :param my_json_list: json list representing the contents of the upper level already traversed
+    :param list_path: list representing the remaining path to be traversed
+    :param current_path: current path already traversed. Useful for printing specific information
+    :param print_all: if True prints all files and directories (included hidden ones)
+    :param reverse: if True prints the result in reverse. If used with time_sorted=True prints the result according
+                    to the time the file (or the directory) has been modified
+    :param time_sorted: if True prints the result according to the time the file (or the directory) has been modified
+    :param my_filter: if 'dir' prints only the directories, if 'file' prints only the files. If None prints all
+    :return: list of elements to be printed
+    """
     for item in my_json_list:
         if len(list_path) == 0:
             break
@@ -94,6 +132,15 @@ def recursive_print_path_info(my_json_list, list_path, current_path, print_all=F
 
 
 def get_list_to_print(contents_list, print_all=False, my_filter=None, current_path=None):
+    """
+    Gets the list to be printed
+    :param contents_list: list of 'json objects' to be printed
+    :param print_all: if True prints all files and directories (included hidden ones)
+    :param my_filter: my_filter: if 'dir' prints only the directories, if 'file' prints only the files.
+                      If None prints all
+    :param current_path:
+    :return: list of information to be printed
+    """
     my_list = list()
     for item in contents_list:
         if apply_filter(item, my_filter):
@@ -109,6 +156,17 @@ def get_list_to_print(contents_list, print_all=False, my_filter=None, current_pa
     return my_list
 
 def build_item_for_list(permissions, size, date, name, time_modified, path=None):
+    """
+    Auxiliary function for get_ist_to_print. This function builds an element for the list to be returned in order
+    to print the result easily
+    :param permissions: file (or directory) permissions
+    :param size: file (or directory) size
+    :param date: date to be printed
+    :param name: file (or directory) name
+    :param time_modified: timestamp of the last modified time for the file (or directory)
+    :param path:
+    :return: relative path for the file (or directory)
+    """
     my_size = build_size(size)
     if path:
         current_str = permissions + " " + my_size + " " + date + " " + path
@@ -121,6 +179,11 @@ def build_item_for_list(permissions, size, date, name, time_modified, path=None)
     return my_dict
 
 def build_size(size):
+    """
+    Builds the size in such a way that it is more readable for large sizes
+    :param size: integer representing the size in bytes
+    :return: a more readable size
+    """
     if size < KILO:
         return str(size)
     elif KILO <= size < MEGA:
@@ -133,6 +196,11 @@ def build_size(size):
         return '{0:.1f}T'.format(round(size / TERA), 1)
 
 def build_date(time_modified):
+    """
+    Builds the date in a better readable fashion
+    :param time_modified: timestamp of the time the file or directory has been modified
+    :return: string representing the date to be printed
+    """
     date = datetime.datetime.fromtimestamp(time_modified)
     month = date.strftime('%b')
     day = date.day
@@ -142,6 +210,12 @@ def build_date(time_modified):
     return my_date
 
 def apply_filter(item, my_filter):
+    """
+    Checks wether the filter shall be applied to the current item
+    :param item: item representing the file or directory to be printed
+    :param my_filter: filter denoting whether this file or directory shall be printed
+    :return: True if the filter has been applied, False otherwise
+    """
     if my_filter:
         if (my_filter == "dir" and "contents" not in item) or (my_filter == "file" and "contents" in item):
             return True
@@ -186,6 +260,7 @@ def main():
     else:
         print_top_level_vertically_with_info(json_data, args.print_all, args.reverse, args.time, args.filter)
 
+# This is for testing within the development environment
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("This program takes a json file containing the representation of a directory"
                                      " in nested structure, and prints out its content in the console in the style"
