@@ -146,6 +146,8 @@ def apply_filter(item, my_filter):
             return True
     return False
 
+
+# This is just for testing executable after install:
 def main():
     parser = argparse.ArgumentParser("This program takes a json file containing the representation of a directory"
                                      " in nested structure, and prints out its content in the console in the style"
