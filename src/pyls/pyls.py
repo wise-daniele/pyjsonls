@@ -78,6 +78,7 @@ def print_path_info(json_data, print_all=False, reverse=False, time_sorted=False
                 my_list = get_list_to_print(item["contents"], print_all, my_filter)#print content
             else:
                 current_path = "./" + item["name"]
+                list_path.pop(0)
                 my_list = recursive_print_path_info(item["contents"], list_path, current_path, print_all, reverse,
                                                     time_sorted, my_filter)
             path_found = True
@@ -126,7 +127,6 @@ def recursive_print_path_info(my_json_list, list_path, current_path, print_all=F
                 recursive_print_path_info(item["contents"], list_path, current_path, print_all, reverse, time_sorted,
                                           my_filter)
         else:
-            list_path.pop(0)
             continue
     return None
 
@@ -164,8 +164,8 @@ def build_item_for_list(permissions, size, date, name, time_modified, path=None)
     :param date: date to be printed
     :param name: file (or directory) name
     :param time_modified: timestamp of the last modified time for the file (or directory)
-    :param path:
-    :return: relative path for the file (or directory)
+    :param path: relative path for the file (or directory)
+    :return: single item that shall fill the list containing the information to be printed
     """
     my_size = build_size(size)
     if path:

@@ -123,6 +123,26 @@
           "size": 66,
           "time_modified": 1699944730,
           "permissions": "drwxr-xr-x"
+        },
+        {
+          "name": "test_deep",
+          "size": 66,
+          "time_modified": 1699944730,
+          "permissions": "drwxr-xr-x",
+          "contents": [
+            {
+              "name": "token.go",
+              "size": 910,
+              "time_modified": 1699954070,
+              "permissions": "-rw-r--r--"
+            },
+            {
+              "name": "go.mod",
+              "size": 66,
+              "time_modified": 1699944730,
+              "permissions": "drwxr-xr-x"
+            }
+          ]
         }
       ]
     }
