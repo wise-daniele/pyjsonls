@@ -47,13 +47,7 @@ def print_top_level_vertically_with_info(json_data, print_all=False, reverse=Fal
         else:
             contents_list = json_data["contents"]
         my_list = get_list_to_print(contents_list, print_all, my_filter)
-    if time_sorted:
-        if reverse:
-            my_list = sorted(my_list, key=itemgetter("timestamp"), reverse=True)
-        else:
-            my_list = sorted(my_list, key=itemgetter("timestamp"))
-    for item in my_list:
-        print(item["info"])
+    print_list(my_list, reverse, time_sorted)
 
 def print_path_info(json_data, print_all=False, reverse=False, time_sorted=False, my_filter=None, path=None):
     """
@@ -88,13 +82,7 @@ def print_path_info(json_data, print_all=False, reverse=False, time_sorted=False
     if not path_found or not my_list:
         print("error: cannot access '" + path + "': No such file or directory")
     else:
-        if time_sorted:
-            if reverse:
-                my_list = sorted(my_list, key=itemgetter("timestamp"), reverse=True)
-            else:
-                my_list = sorted(my_list, key=itemgetter("timestamp"))
-        for item in my_list:
-            print(item["info"])
+        print_list(my_list, reverse, time_sorted)
 
 def recursive_print_path_info(my_json_list, list_path, current_path, print_all=False, reverse=False, time_sorted=False,
                               my_filter=None):
@@ -217,7 +205,7 @@ def build_date(time_modified):
 
 def apply_filter(item, my_filter):
     """
-    Checks wether the filter shall be applied to the current item
+    Checks whether the filter shall be applied to the current item
     :param item: item representing the file or directory to be printed
     :param my_filter: filter denoting whether this file or directory shall be printed
     :return: True if the filter has been applied, False otherwise
@@ -226,6 +214,21 @@ def apply_filter(item, my_filter):
         if (my_filter == "dir" and "contents" not in item) or (my_filter == "file" and "contents" in item):
             return True
     return False
+
+def print_list(my_list, reverse, time_sorted):
+    """
+    Prints the list of files and directories in a vertical fashion with additional information
+    :param my_list: list that has been built
+    :param reverse: denotes whether the list shall be printed in reverse mode
+    :param time_sorted: denotes whether the list shall be printed according to the modified time
+    """
+    if time_sorted:
+        if reverse:
+            my_list = sorted(my_list, key=itemgetter("timestamp"), reverse=True)
+        else:
+            my_list = sorted(my_list, key=itemgetter("timestamp"))
+    for item in my_list:
+        print(item["info"])
 
 
 # This is just for testing executable after install:
