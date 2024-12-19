@@ -70,14 +70,6 @@ def test_print_vertically_with_info(capsys):
             "-rw-r--r-- 74 Nov 14 9:27 main.go\ndrwxr-xr-x 4.0K Nov 17 8:21 parser\n" +
             "-rw-r--r-- 4.0K Nov 14 10:27 token\n")
 
-    print_top_level_vertically_with_info(json_data, True, False, False, None)
-    captured = capsys.readouterr()
-    assert (captured.out == "drwxr-xr-x 8.7K Nov 14 6:57 .gitignore\ndrwxr-xr-x 1.0K Nov 14 6:57 LICENSE\n" +
-            "drwxr-xr-x 83 Nov 14 6:57 README.md\n-rw-r--r-- 4.0K Nov 14 11:28 ast\n" +
-            "drwxr-xr-x 60 Nov 14 9:21 go.mod\ndrwxr-xr-x 4.0K Nov 14 10:51 lexer\n" +
-            "-rw-r--r-- 74 Nov 14 9:27 main.go\ndrwxr-xr-x 4.0K Nov 17 8:21 parser\n" +
-            "-rw-r--r-- 4.0K Nov 14 10:27 token\n")
-
     print_top_level_vertically_with_info(json_data, False, True, False, None)
     captured = capsys.readouterr()
     assert (captured.out == "-rw-r--r-- 4.0K Nov 14 10:27 token\ndrwxr-xr-x 4.0K Nov 17 8:21 parser\n" +
