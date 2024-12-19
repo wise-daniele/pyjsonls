@@ -48,6 +48,10 @@ def test_print_path_info(capsys):
     assert (captured.out == "-rw-r--r-- 910 Nov 14 10:27 ./token/test_deep/test_deeper/deep_deep\n" +
             "drwxr-xr-x 66 Nov 14 7:52 ./token/test_deep/test_deeper/deep_deep_again\n")
 
+    print_path_info(json_data, False, False, False, None,
+                    "this_is_a/wrong/path")
+    captured = capsys.readouterr()
+    assert (captured.out == "error: cannot access 'this_is_a/wrong/path': No such file or directory\n")
 
 def test_print_vertically_with_info(capsys):
     print_top_level_vertically_with_info(json_data, False, False, False, None)
