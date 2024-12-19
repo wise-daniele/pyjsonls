@@ -18,15 +18,24 @@ def print_top_level(json_data, print_all=False, my_filter=None):
     :param my_filter: if 'dir' prints only the directories, if 'file' prints only the files. If none prints all
     """
     result = ""
+    first_item = True
     if "contents" in json_data:
         for item in json_data["contents"]:
             if apply_filter(item, my_filter):
                 continue
             if not print_all:
                 if item["name"][0] != ".":
-                    result = result + " " + item["name"]
+                    if first_item:
+                        result = result + item["name"]
+                    else:
+                        result = result + " " + item["name"]
+                    first_item = False
             else:
-                result = result + " " + item["name"]
+                if first_item:
+                    result = result + item["name"]
+                else:
+                    result = result + " " + item["name"]
+                first_item = False
     print(result)
 
 def print_top_level_vertically_with_info(json_data, print_all=False, reverse=False, time_sorted=False,
