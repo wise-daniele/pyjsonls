@@ -1,4 +1,4 @@
-# Pyls
+# Pyjsonls
 
 This program takes a json file containing the representation of a directory in nested structure, and prints out its content in the console in the style of ls (linux utility).
 (https://github.com/wise-daniele/pyls)

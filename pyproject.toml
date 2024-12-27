@@ -18,7 +18,7 @@ classifiers = [
 ]
 
 [project.scripts]
-pyjsonls = "pyls.pyls:main"
+pyjsonls = "pyjsonls.pyjsonls:main"
 
 [project.urls]
 Homepage = "https://github.com/wise-daniele/pyls"

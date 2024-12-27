@@ -1,6 +1,6 @@
 import json
-from src.pyls.pyls import (build_size, apply_filter, print_top_level, print_path_info,
-                           print_top_level_vertically_with_info)
+from src.pyjsonls.pyjsonls import (build_size, apply_filter, print_top_level, print_path_info,
+                                   print_top_level_vertically_with_info)
 
 with open("../data/sample.json") as f:
     json_data = json.load(f)
