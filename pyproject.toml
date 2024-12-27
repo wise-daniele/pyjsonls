@@ -3,8 +3,8 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pyls"
-version = "0.0.1"
+name = "pyjsonls"
+version = "0.2.0"
 authors = [
   { name="Daniele S.", email="daniele.stirp@gmail.com" }
 ]
@@ -18,7 +18,7 @@ classifiers = [
 ]
 
 [project.scripts]
-pyls = "pyls.pyls:main"
+pyjsonls = "pyls.pyls:main"
 
 [project.urls]
 Homepage = "https://github.com/wise-daniele/pyls"
