@@ -1,7 +1,7 @@
 # Pyjsonls
 
 This program takes a json file containing the representation of a directory in nested structure, and prints out its content in the console in the style of ls (linux utility).
-(https://github.com/wise-daniele/pyls)
+(https://github.com/wise-daniele/pyjsonls)
 
 ##### JSON file
 The top level item of the json must represents a directory with the following elements:
